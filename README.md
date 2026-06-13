@@ -7,7 +7,7 @@ This project implements a real-time Network Intrusion Detection System (NIDS) us
 - Zero Training Requirement - Detects attacks immediately without labeled data
 - Real-time Detection - Processes network traffic in sliding windows
 - Interpretable Scores - Provides drift scores for explainable decisions
-- ML Comparison - Benchmarked against Random Forest, XGBoost, and Logistic Regression
+- ML Comparison - Benchmarked against Random Forest
 - Multi-Dataset Validation - Tested on CICIDS-2017 and UNSW-NB15 datasets
 - Comprehensive Visualization - 6 professional plots for analysis
 
@@ -25,7 +25,7 @@ Key Insight: WFDS trades 40-50% accuracy for zero training time and immediate de
 
 ## System Architecture
 
-The system processes network traffic through sliding windows of 400 samples. Features are extracted and scaled, then passed to both WFDS (unsupervised detection) and ML models (baseline comparison). WFDS establishes a baseline from the first window assuming normal traffic, then calculates drift scores using Euclidean distance between window means and the baseline. Scores are normalized to [0,1] range, and a threshold at the 75th percentile determines attack detection.
+The system processes network traffic through sliding windows of 400 samples. Features are extracted and scaled, then passed to both WFDS (unsupervised detection) and ML models (baseline comparison). WFDS establishes a baseline from the first window assuming normal traffic, then calculates drift scores using Euclidean distance between window means and the baseline. Scores are normalized to [0,1] range, and a threshold at the 75th percentile (top 25% of drift scores) classifies a window as an attack.
 
 ## WFDS Algorithm
 
@@ -126,6 +126,6 @@ Use Machine Learning when:
 
 - CICIDS-2017 Dataset from Canadian Institute for Cybersecurity
 - UNSW-NB15 Dataset from UNSW Canberra Cyber
-- Scikit-learn, XGBoost, and open-source community
+
 
 
