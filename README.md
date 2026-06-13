@@ -55,13 +55,13 @@ feature_diff = μ_window - μ_baseline (difference between current and baseline 
 
 CICIDS-2017:
 - 691,406 samples
-- Attack types: DDoS, DoS, Port Scan, Brute Force, Web Attack
+- Attack types: (DDoS, DoS, Port Scan, Brute Force, Web Attack)
 - Attack percentage: 36.4%
 - Features: 5 network flow features
 
 UNSW-NB15:
 - 257,673 samples
-- Attack types: 9 (Fuzzers, Analysis, Backdoors, DoS, Exploits, Generic, Reconnaissance, Shellcode, Worms)
+- Attack types: (Fuzzers, Analysis, Backdoors, DoS, Exploits, Generic, Reconnaissance, Shellcode, Worms)
 - Attack percentage: 63.9%
 - Features: 5 network flow features
 
