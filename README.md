@@ -122,7 +122,6 @@ Use Machine Learning when:
 - Web dashboard for visualization (Streamlit/FastAPI)
 - Alert system for email/Slack notifications
 
-
 ## Acknowledgments
 
 - CICIDS-2017 Dataset from Canadian Institute for Cybersecurity
