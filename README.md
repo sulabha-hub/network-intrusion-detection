@@ -36,7 +36,8 @@ The algorithm works in five steps:
 4. Normalize scores to [0, 1] range
 5. Apply threshold (top 75th percentile = attack detected)
 
-Mathematical Formulation: Drift Score = ||μ_window - μ_baseline||₂
+Mathematical Formulation: 
+Drift Score = ||μ_window - μ_baseline||₂
 Where:
 - ||·||₂ denotes the Euclidean norm (straight-line distance)
 - μ_window = mean vector of current window features  
