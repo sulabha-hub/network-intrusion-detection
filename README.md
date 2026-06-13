@@ -48,6 +48,7 @@ This calculates the Euclidean distance between the current traffic pattern
 and the normal traffic baseline. Larger distances indicate potential attacks.
 
 Simplified Formula: Drift Score = √(Σ (feature_diff)²)
+feature_diff = μ_window - μ_baseline (difference between current and baseline for each feature)
 
 ## Datasets Used
 
