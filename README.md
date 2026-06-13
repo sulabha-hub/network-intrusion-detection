@@ -63,13 +63,23 @@ UNSW-NB15:
 
 ## Visualizations
 
-The project generates six comprehensive visualizations:
-- Figure 1: Real-time WFDS drift detection over time windows
-- Figure 2: Confusion matrices comparing WFDS vs Random Forest
-- Figure 3: Performance metrics comparison bar chart
-- Figure 4: ROC curves with AUC scores
-- Figure 5: Score distribution for benign vs attack windows
-- Figure 6: Dataset-wise performance comparison
+### Figure 1: Real-time WFDS Drift Detection
+![Figure 1](Figure1_WFDS_Detection.png)
+
+### Figure 2: Confusion Matrices
+![Figure 2](Figure2_Confusion_Matrices.png)
+
+### Figure 3: Performance Comparison
+![Figure 3](Figure3_Performance.png)
+
+### Figure 4: ROC Curves
+![Figure 4](Figure4_ROC_Curves.png)
+
+### Figure 5: Score Distribution
+![Figure 5](Figure5_Score_Distribution.png)
+
+### Figure 6: Dataset Comparison
+![Figure 6](Figure6_Dataset_Comparison.png)
 
 ## When to Use WFDS vs Machine Learning
 
@@ -109,6 +119,4 @@ Use Machine Learning when:
 - UNSW-NB15 Dataset from UNSW Canberra Cyber
 - Scikit-learn, XGBoost, and open-source community
 
-## Project Pitch for Recruiters
 
-I built an intrusion detection system that detects network attacks in real-time without any training data. While machine learning models need 50,000+ labeled samples to achieve 98% accuracy, my WFDS algorithm works immediately with 56% accuracy. This trade-off makes it perfect for edge devices, zero-trust security deployments, and cold-start scenarios where training data is unavailable. The project demonstrates skills in Python, machine learning, data processing, and understanding real-world accuracy-efficiency trade-offs.
