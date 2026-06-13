@@ -65,21 +65,27 @@ UNSW-NB15:
 
 ### Figure 1: Real-time WFDS Drift Detection
 ![Figure 1](Figure1_WFDS_Detection.png)
+Shows real-time attack detection over time windows. Red areas indicate detected attacks when drift score exceeds threshold.
 
 ### Figure 2: Confusion Matrices
 ![Figure 2](Figure2_Confusion_Matrices.png)
+Comparison of classification performance between WFDS (unsupervised) and Random Forest (supervised).
 
 ### Figure 3: Performance Comparison
 ![Figure 3](Figure3_Performance.png)
+Bar chart comparing Accuracy, Precision, Recall, F1-Score, and AUC between WFDS and Random Forest.
 
 ### Figure 4: ROC Curves
 ![Figure 4](Figure4_ROC_Curves.png)
+ROC curves with AUC scores showing detection performance on both datasets.
 
 ### Figure 5: Score Distribution
 ![Figure 5](Figure5_Score_Distribution.png)
+Distribution of WFDS drift scores for benign vs attack windows.
 
 ### Figure 6: Dataset Comparison
 ![Figure 6](Figure6_Dataset_Comparison.png)
+Side-by-side comparison of WFDS vs Random Forest performance across both datasets.
 
 ## When to Use WFDS vs Machine Learning
 
