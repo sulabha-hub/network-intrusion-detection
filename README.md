@@ -38,6 +38,7 @@ The algorithm works in five steps:
 
 Mathematical Formulation: 
 Drift Score = ||μ_window - μ_baseline||₂
+
 Where:
 - ||·||₂ denotes the Euclidean norm (straight-line distance)
 - μ_window = mean vector of current window features  
