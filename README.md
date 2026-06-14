@@ -1,6 +1,6 @@
 # WFDS: Zero-Training Network Intrusion Detection System
 
-This project implements a real-time Network Intrusion Detection System (NIDS) using a Window-based Feature Drift Scoring (WFDS) algorithm. Unlike traditional machine learning approaches that require extensive labeled training data, WFDS detects network attacks immediately with zero training, making it ideal for edge devices, cold-start environments, and real-time monitoring applications.
+WFDS is an unsupervised real-time network intrusion detection system designed to detect cyber attacks without any training data. The system utilizes sliding window analysis to monitor network traffic, calculates drift scores using Euclidean distance to identify anomalies, and presents attack detection through interactive visualizations. WFDS aims to improve network security by enabling zero-training deployment, enhancing edge device protection, and reducing dependency on labeled attack data.
 
 ## Key Features
 
