@@ -1,6 +1,6 @@
 # WFDS: Zero-Training Network Intrusion Detection System
 
-WFDS is an unsupervised real-time network intrusion detection system designed to detect cyber attacks without any training data. The system utilizes sliding window analysis to monitor network traffic, calculates drift scores using Euclidean distance to identify anomalies, and presents attack detection through interactive visualizations. WFDS aims to improve network security by enabling zero-training deployment, enhancing edge device protection, and reducing dependency on labeled attack data.
+WFDS is an unsupervised real-time network intrusion detection system designed to detect cyber attacks without any training data. The system utilizes sliding window analysis to monitor network traffic, calculates drift scores using Mahalanobis distance to identify anomalies, and presents attack detection through interactive visualizations. WFDS aims to improve network security by enabling zero-training deployment, enhancing edge device protection, and reducing dependency on labeled attack data.
 
 ## Key Features
 
@@ -13,55 +13,57 @@ WFDS is an unsupervised real-time network intrusion detection system designed to
 
 ## Performance Summary
 
-CICIDS-2017 Dataset:
-- WFDS: Accuracy 56.3%, F1-Score 29.1%, AUC 55.1% (Zero training time)
-- Random Forest: Accuracy 97.8%, F1-Score 97.1%, AUC 99.2% (13.6s training)
+### CICIDS-2017 Dataset:
+| Method | Accuracy | F1-Score | AUC | Training Time |
+|--------|----------|----------|-----|---------------|
+| WFDS | 84.9% | 75.5% | 83.5% | 0 seconds |
+| Random Forest | 97.8% | 97.1% | 99.2% | 13.6 seconds |
 
-UNSW-NB15 Dataset:
-- WFDS: Accuracy 47.9%, F1-Score 43.5%, AUC 48.4% (Zero training time)
-- Random Forest: Accuracy 92.2%, F1-Score 94.0%, AUC 98.0% (15.2s training)
+### UNSW-NB15 Dataset:
+| Method | Accuracy | F1-Score | AUC | Training Time |
+|--------|----------|----------|-----|---------------|
+| WFDS | 56.0% | 52.3% | 69.1% | 0 seconds |
+| Random Forest | 92.2% | 94.0% | 98.0% | 15.2 seconds |
 
-Key Insight: WFDS trades 40-50% accuracy for zero training time and immediate deployment, making it perfect for resource-constrained environments where ML training is infeasible.
+**Key Insight:** WFDS trades 13-36% accuracy for zero training time and immediate deployment, making it perfect for resource-constrained environments where ML training is infeasible.
 
 ## System Architecture
 
-The system processes network traffic through sliding windows of 400 samples. Features are extracted and scaled, then passed to both WFDS (unsupervised detection) and ML models (baseline comparison). WFDS establishes a baseline from the first window assuming normal traffic, then calculates drift scores using Euclidean distance between window means and the baseline. Scores are normalized to [0,1] range, and a threshold at the 75th percentile (top 25% of drift scores) classifies a window as an attack.
+The system processes network traffic through sliding windows of 400 samples. Features are extracted and scaled, then passed to both WFDS (unsupervised detection) and ML models (baseline comparison). WFDS establishes a baseline from the first window assuming normal traffic, then calculates drift scores using Mahalanobis distance between window means and the baseline. Scores are normalized to [0,1] range, and a threshold at the 75th percentile classifies a window as an attack.
 
 ## WFDS Algorithm
 
 The algorithm works in five steps:
-1. Establish baseline from first window (normal traffic assumption)
-2. Slide window through network traffic data
-3. Calculate drift = Euclidean distance between window mean and baseline mean
-4. Normalize scores to [0, 1] range
-5. Apply threshold (top 75th percentile = attack detected)
 
-Mathematical Formulation: 
-Drift Score = ||μ_window - μ_baseline||₂
+1. Establish baseline from first window (normal traffic assumption)
+2. Calculate covariance matrix and its inverse for baseline features
+3. Slide window through network traffic data
+4. Calculate drift = Mahalanobis distance between window mean and baseline mean
+5. Normalize scores to [0,1] range and apply threshold (top 75th percentile = attack detected)
+
+### Mathematical Formulation:
+
+**Mahalanobis Distance:** Drift Score = √[(μ_window - μ_baseline)ᵀ × Σ⁻¹ × (μ_window - μ_baseline)]
 
 Where:
-- ||·||₂ denotes the Euclidean norm (straight-line distance)
-- μ_window = mean vector of current window features  
+- Σ = Covariance matrix of baseline window
+- Σ⁻¹ = Inverse of covariance matrix
+- μ_window = mean vector of current window features
 - μ_baseline = mean vector of baseline (normal traffic) window
 
-This calculates the Euclidean distance between the current traffic pattern
-and the normal traffic baseline. Larger distances indicate potential attacks.
-
-Simplified Formula: Drift Score = √(Σ (feature_diff)²)
-
-feature_diff = μ_window - μ_baseline (difference between current and baseline for each feature)
+This calculates the correlation-aware distance between the current traffic pattern and the normal traffic baseline. Mahalanobis distance accounts for feature relationships and scale differences, making it effective for attack detection.
 
 ## Datasets Used
 
-CICIDS-2017:
+### CICIDS-2017:
 - 691,406 samples
-- Attack types: (DDoS, DoS, Port Scan, Brute Force, Web Attack)
+- Attack types: DDoS, DoS, Port Scan, Brute Force, Web Attack
 - Attack percentage: 36.4%
 - Features: 5 network flow features
 
-UNSW-NB15:
+### UNSW-NB15:
 - 257,673 samples
-- Attack types: (Fuzzers, Analysis, Backdoors, DoS, Exploits, Generic, Reconnaissance, Shellcode, Worms)
+- Attack types: Fuzzers, Analysis, Backdoors, DoS, Exploits, Generic, Reconnaissance, Shellcode, Worms
 - Attack percentage: 63.9%
 - Features: 5 network flow features
 
@@ -93,13 +95,13 @@ Side-by-side comparison of WFDS vs Random Forest performance across both dataset
 
 ## When to Use WFDS vs Machine Learning
 
-Use WFDS when:
+### Use WFDS when:
 - No labeled training data available (cold-start deployment)
 - Real-time detection needed on edge devices
 - Computational resources are limited
 - Explainability of decisions is required
 
-Use Machine Learning when:
+### Use Machine Learning when:
 - Labeled training data is available
 - Maximum accuracy is required
 - Computational resources are sufficient for training
@@ -107,25 +109,39 @@ Use Machine Learning when:
 
 ## Limitations
 
-- WFDS performs poorly on complex multi-class attack datasets (UNSW AUC 48.4%)
-- Simple Euclidean distance may not capture complex attack patterns
+- WFDS performs lower on complex multi-class attack datasets (UNSW AUC 69.1% vs CICIDS 83.5%)
+- Requires covariance matrix inversion (computational overhead)
 - Assumes temporal ordering of data (data should not be shuffled)
 - Fixed window size may not be optimal for all network traffic patterns
 
 ## Future Improvements
 
 - Adaptive window sizing based on traffic patterns
-- Mahalanobis distance instead of Euclidean for correlation awareness
+- Ensemble of multiple distance metrics
 - Feature weighting to learn important features from historical data
 - Hybrid system combining WFDS with ML for optimal performance
 - Live PCAP processing for real-time packet capture
 - Web dashboard for visualization (Streamlit/FastAPI)
 - Alert system for email/Slack notifications
 
+## Technologies Used
+
+| Category | Technologies |
+|----------|--------------|
+| Language | Python 3.8+ |
+| ML & Processing | Scikit-learn, Pandas, NumPy |
+| Visualization | Matplotlib, Seaborn |
+| ML Model | Random Forest |
+| Distance Metric | Mahalanobis Distance |
+| Datasets | CICIDS-2017, UNSW-NB15 |
+
 ## Acknowledgments
 
 - CICIDS-2017 Dataset from Canadian Institute for Cybersecurity
 - UNSW-NB15 Dataset from UNSW Canberra Cyber
+- Scikit-learn, Pandas, NumPy, Matplotlib, Seaborn open-source community
 
+---
 
+*Built for zero-training network intrusion detection and edge device security*
 
